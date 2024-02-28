@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Piano Application</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/tone"></script>
+    <script src="http://localhost:3000/api/v1/tunes"></script>
+</head>
+
+<body>
+    <div id="controlDiv">
+        <div class="controlSubDiv">
+            <label for="tunesDrop">Tune:</label>
+            <select name="tunes" id="tunesDrop">
+                <option value="elise">Für Elise</option>
+                <option value="smoke">The Godfather</option>
+                <option value="seven">Seven Nation Army</option>
+            </select>
+            <button id="tunebtn"><img class="controlimg" src="public/play.png" alt="Play the selected tune."></button>
+        </div>
+        <div class="controlSubDiv">
+            <label for="recordbtn">Record:</label>
+            <button id="recordbtn"><img class="controlimg" src="public/record.png" alt="Record a new tune."></button>
+            <button id="stopbtn" disabled><img class="controlimg" src="public/stop.png"
+                    alt="Stop recording of tune."></button>
+            <input type="text" id="recordName" name="recordName" placeholder="Tune name" />
+        </div>
+    </div>
+    <br><br>
+    <div id="keyboardDiv">
+        <button id="c4" class="whitebtn">
+            C4<br />
+            (a)</button><button id="c#4" class="blackbtn">
+            C#4<br />
+            (w)</button><button id="d4" class="whitebtn">
+            D4<br />
+            (s)</button><button id="d#4" class="blackbtn">
+            D#4<br />
+            (e)</button><button id="e4" class="whitebtn">
+            E4<br />
+            (d)</button><button id="f4" class="whitebtn">
+            F4<br />
+            (f)</button><button id="f#4" class="blackbtn">
+            F#4<br />
+            (t)</button><button id="g4" class="whitebtn">
+            G4<br />
+            (g)</button><button id="g#4" class="blackbtn">
+            G#4<br />
+            (y)</button><button id="a4" class="whitebtn">
+            A4<br />
+            (h)</button><button id="bb4" class="blackbtn">
+            Bb4<br />
+            (u)</button><button id="b4" class="whitebtn">
+            B4<br />
+            (j)</button><button id="c5" class="whitebtn">
+            C5<br />
+            (k)</button><button id="c#5" class="blackbtn">
+            C#5<br />
+            (o)</button><button id="d5" class="whitebtn">
+            D5<br />
+            (l)</button><button id="d#5" class="blackbtn">
+            D#5<br />
+            (p)</button><button id="e5" class="whitebtn">
+            E5<br />
+            (;)</button>
+    </div>
+    <div id="tooSmallWarning"><img id="oopsimg" src="oops.jpg" alt="An image saying oops.">
+        <p>This website requires at least 600px screen width.</p>
+    </div>
+</body>
+
+<script>
+
+const synth = new Tone.Synth().toDestination();
+
+const C4S = () => {
+
+    const now = Tone.now();
+
+    synth.triggerAttackRelease("c#4", "8n", now);
+    }
+
+    const note_playing = new Tone.Synth().toDestination();
+
+        function playNote(note) {
+            const now = Tone.now();
+            note_playing.triggerAttackRelease(note, "8n", now);
+        }
+
+        document.getElementById('keyboardDiv').addEventListener('click', function(event) {
+            if (event.target.tagName === 'BUTTON') {
+                const note = event.target.id;
+                playNote(note);
+            }
+        });
+                function playNote(note) {
+            const now = Tone.now();
+            synth.triggerAttackRelease(note, "8n", now);
+        }
+
+        const keyboardMap = {
+            'a': 'C4',
+            'w': 'C#4',
+            's': 'D4',
+            'e': 'D#4',
+            'd': 'E4',
+            'f': 'F4',
+            't': 'F#4',
+            'g': 'G4',
+            'y': 'G#4',
+            'h': 'A4',
+            'u': 'Bb4',
+            'j': 'B4',
+            'k': 'C5',
+            'o': 'C#5',
+            'l': 'D5',
+            'p': 'D#5',
+            ';': 'E5'
+        };
+
+        document.addEventListener('keydown', function(event) {
+            const key = event.key.toLowerCase();
+            if (keyboardMap.hasOwnProperty(key)) {
+                const note = keyboardMap[key];
+                playNote(note);
+            }
+        });
+        let recording = false;
+
+        let recordedTune = [];
+
+        function startRecording() {
+            recording = true;
+            recordedTune = [];
+            document.getElementById('recordbtn').disabled = true;
+            document.getElementById('stopbtn').disabled = false;
+        }
+
+        function stopRecording() {
+            recording = false;
+            document.getElementById('recordbtn').disabled = false;
+            document.getElementById('stopbtn').disabled = true;
+
+            const tuneName = document.getElementById('recordName').value || "No-name Tune";
+            uploadTune(tuneName, recordedTune);
+        }   
+
+        async function uploadTune(tuneName, tuneData) {
+            try {
+                const response = await axios.post('http://localhost:3000/api/v1/upload', {
+                    name: tuneName,
+                    tune: tuneData
+                });
+                populateDropdown();
+            } catch (error) {
+                console.error('Error uploading tune:', error);
+            }
+        }
+
+        document.getElementById('recordbtn').addEventListener('click', startRecording);
+        document.getElementById('stopbtn').addEventListener('click', stopRecording);
+
+
+</script>
+
+</html>

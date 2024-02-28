@@ -1,0 +1,5 @@
+Replace the url below with the url we can use to access your website:
+
+https://main--magenta-sorbet-bcbbc8.netlify.app/index.html 
+
+Ég gat ekki búið til nýja síðu sama hvað ég reyndi....

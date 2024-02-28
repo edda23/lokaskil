@@ -1,0 +1,110 @@
+#keyboardDiv {
+    display: block;
+    position: relative;
+    left: 10%;
+    padding: 0; 
+    width: 80%;
+}
+#controlDiv {
+    display: block;
+    box-sizing: border-box;
+    padding: 0; 
+    margin-left: 10%;
+    width: 80%;
+}
+.controlSubDiv {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0; 
+    width: 49.5%;
+}
+.controlimg {
+    width: 1rem;
+    height: 1rem;
+}
+#tooSmallWarning {
+    display: none;
+}
+button:enabled:active {
+    background-color: rgb(152, 152, 152);
+}
+select {
+    width: 50%;
+}
+.whitebtn {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    height: 100px;
+    width: 10%;
+}
+.blackbtn {
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    height: 80px;
+    width: 6%;
+    color: white;
+}
+
+#c\#4 {
+    position: absolute;
+    left: 7%;
+    top: 0px;
+}
+#d\#4 {
+    position: absolute;
+    left: 17%;
+    top: 0px;
+}
+#f\#4 {
+    position: absolute;
+    left: 37%;
+    top: 0px;
+}
+#g\#4 {
+    position: absolute;
+    left: 47%;
+    top: 0px;
+}
+#bb4 {
+    position: absolute;
+    left: 57%;
+    top: 0px;
+}
+#c\#5 {
+    position: absolute;
+    left: 77%;
+    top: 0px;
+}
+#d\#5 {
+    position: absolute;
+    left: 87%;
+    top: 0px;
+}
+
+@media only screen and (max-width: 599px) {
+    #keyboardDiv {
+        display: none;
+    }
+    #controlDiv {
+        display: none;
+    }
+
+    #tooSmallWarning {
+        display: block;
+        margin: auto;
+        padding: 0;
+        width: 80%;
+    }
+
+    #oopsimg {
+        width: 100%;
+        margin: auto;
+        padding: 0;
+    }
+
+    p {
+        text-align: center;
+    }
+}
